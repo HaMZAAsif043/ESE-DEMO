@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { ESE_MEDIA, type Stat } from "../_data/ese";
-import { Reveal } from "./motion-effects";
+import { Reveal, SpotlightCard, CountUp } from "./motion-effects";
 
 type HeroProps = {
   stats: Stat[];
@@ -62,7 +62,7 @@ export function Hero({ stats }: HeroProps) {
   const statsOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <div ref={containerRef} className="relative h-[120vh] bg-[var(--ese-dark-bg)]">
+    <div ref={containerRef} className="relative h-[120vh] bg-[var(--ese-dark-bg)]/70">
       {/* Sticky Hero frame */}
       <div className="sticky top-0 h-screen overflow-hidden flex items-center">
         {/* Background Image Slider with Zoom and Blur */}
@@ -93,12 +93,58 @@ export function Hero({ stats }: HeroProps) {
               </motion.div>
             ))}
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[var(--ese-dark-bg)]/90 via-[var(--ese-dark-bg)]/75 to-[var(--ese-dark-bg)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--ese-light-bg)]/10 via-[var(--ese-dark-bg)]/40 to-[var(--ese-dark-bg)]" />
           <div className="absolute inset-0 futuristic-grid-dark opacity-20" />
           
           {/* Abstract futuristic glowing elements */}
           <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-[var(--ese-blue)]/10 blur-[120px]" />
           <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-[var(--ese-sky)]/10 blur-[120px]" />
+
+          {/* Floating network nodes & link lines */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none z-10 opacity-75">
+            {[
+              { left: "12%", top: "25%", size: 6, delay: 0 },
+              { left: "75%", top: "18%", size: 10, delay: 2 },
+              { left: "40%", top: "68%", size: 8, delay: 1.5 },
+              { left: "28%", top: "82%", size: 5, delay: 3.2 }
+            ].map((node, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full bg-[var(--ese-sky)]/40 shadow-[0_0_12px_rgba(255,170,0,0.5)]"
+                style={{
+                  left: node.left,
+                  top: node.top,
+                  width: node.size,
+                  height: node.size,
+                }}
+                animate={{
+                  y: [0, -25, 0],
+                  opacity: [0.35, 0.9, 0.35],
+                }}
+                transition={{
+                  duration: 7 + i * 1.5,
+                  repeat: Infinity,
+                  delay: node.delay,
+                  ease: "easeInOut"
+                }}
+              />
+            ))}
+            
+            <svg className="absolute inset-0 h-full w-full opacity-20" xmlns="http://www.w3.org/2000/svg">
+              <motion.line
+                x1="12%" y1="25%" x2="40%" y2="68%"
+                stroke="#ffaa00" strokeWidth="1" strokeDasharray="3 3"
+                animate={{ strokeDashoffset: [0, -20] }}
+                transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+              />
+              <motion.line
+                x1="40%" y1="68%" x2="75%" y2="18%"
+                stroke="#ffaa00" strokeWidth="1" strokeDasharray="3 3"
+                animate={{ strokeDashoffset: [0, 20] }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+              />
+            </svg>
+          </div>
         </motion.div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 py-20 lg:px-8">
@@ -168,10 +214,8 @@ export function Hero({ stats }: HeroProps) {
             {/* Right Column: Featured Stats highlight */}
             <motion.div style={{ scale: statsScale, y: statsY, opacity: statsOpacity }} className="lg:block">
               <Reveal delay={0.5} y={40}>
-                <div className="glass-card-dark rounded-2xl p-8 border border-white/15 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-[var(--ese-sky)]/10 blur-2xl transition-all duration-500 group-hover:bg-[var(--ese-sky)]/20" />
-                  
-                  <h3 className="font-display text-sm font-black uppercase tracking-widest text-[var(--ese-sky)] mb-6">
+                <SpotlightCard className="glass-card-dark rounded-2xl p-8 border border-white/15 shadow-2xl">
+                  <h3 className="font-display text-xs font-black uppercase tracking-widest text-[var(--ese-sky)] mb-6">
                     Market Leadership In Numbers
                   </h3>
 
@@ -179,7 +223,7 @@ export function Hero({ stats }: HeroProps) {
                     {stats.slice(0, 3).map((stat) => (
                       <div key={stat.label} className="flex items-start gap-4 border-b border-white/5 pb-5 last:border-0 last:pb-0">
                         <div className="font-display text-3xl font-extrabold text-[var(--ese-sky)]/90 min-w-[90px]">
-                          {stat.value}
+                          <CountUp value={stat.value} />
                         </div>
                         <div>
                           <h4 className="text-xs font-bold text-white uppercase tracking-wider">{stat.label}</h4>
@@ -188,7 +232,7 @@ export function Hero({ stats }: HeroProps) {
                       </div>
                     ))}
                   </div>
-                </div>
+                </SpotlightCard>
               </Reveal>
             </motion.div>
           </div>

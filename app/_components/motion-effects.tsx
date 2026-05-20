@@ -158,3 +158,121 @@ export function HoverLift({ children, className = "" }: Omit<MotionWrapperProps,
     </motion.div>
   );
 }
+
+import { MouseEvent } from "react";
+
+export function SpotlightCard({
+  children,
+  className = "",
+  glowColor = "rgba(1, 99, 210, 0.08)",
+  borderColor = "rgba(1, 99, 210, 0.35)",
+  radius = 350
+}: {
+  children: ReactNode;
+  className?: string;
+  glowColor?: string;
+  borderColor?: string;
+  radius?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    ref.current.style.setProperty("--mouse-x", `${x}px`);
+    ref.current.style.setProperty("--mouse-y", `${y}px`);
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      className={`group relative overflow-hidden transition-all duration-300 ${className}`}
+      style={{
+        // @ts-ignore
+        "--glow-color": glowColor,
+        // @ts-ignore
+        "--border-color": borderColor,
+        // @ts-ignore
+        "--glow-radius": `${radius}px`,
+      }}
+    >
+      {/* Background Spotlight Glow */}
+      <div 
+        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
+        style={{
+          background: `radial-gradient(var(--glow-radius) circle at var(--mouse-x, 0px) var(--mouse-y, 0px), var(--glow-color), transparent 80%)`
+        }}
+      />
+      
+      {/* Border Spotlight Glow (Vercel-style) */}
+      <div 
+        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
+        style={{
+          padding: "1px",
+          background: `radial-gradient(var(--glow-radius) circle at var(--mouse-x, 0px) var(--mouse-y, 0px), var(--border-color), transparent 80%)`,
+          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+        }}
+      />
+
+      <div className="relative z-20">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+import { useEffect, useState } from "react";
+
+export function CountUp({ value }: { value: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [displayValue, setDisplayValue] = useState("0");
+
+  useEffect(() => {
+    const num = parseInt(value.replace(/[^0-9]/g, ""), 10);
+    const suffix = value.replace(/[0-9]/g, "");
+    if (isNaN(num)) {
+      setDisplayValue(value);
+      return;
+    }
+
+    let started = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !started) {
+          started = true;
+          let start = 0;
+          const duration = 1600; // 1.6s duration
+          const startTime = performance.now();
+
+          const animate = (now: number) => {
+            const progress = Math.min((now - startTime) / duration, 1);
+            // Ease out quad
+            const easeProgress = progress * (2 - progress);
+            const currentNum = Math.floor(easeProgress * num);
+            setDisplayValue(`${currentNum}${suffix}`);
+
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            }
+          };
+          requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [value]);
+
+  return <span ref={ref}>{displayValue}</span>;
+}

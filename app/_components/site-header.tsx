@@ -3,15 +3,15 @@ import { navLinks } from "../_data/ese";
 
 export function SiteHeader() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--ese-line)] bg-white/95 text-[var(--ese-ink)] backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-5 py-3.5 lg:px-8">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--ese-line)] bg-white text-[var(--ese-ink)] backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-5 py-4 lg:px-8">
         <a href="#top" className="flex items-center gap-3.5 group" aria-label="ESE Home">
-          <span className="relative h-9 w-28 overflow-hidden rounded bg-transparent p-1 transition-all duration-300">
+          <span className="relative h-14 w-40 overflow-hidden rounded bg-transparent p-1 transition-all duration-300">
             <Image 
               src="/logo.png" 
               alt="ESE Logo" 
               fill 
-              sizes="112px" 
+              sizes="160px" 
               className="object-contain p-1" 
             />
           </span>

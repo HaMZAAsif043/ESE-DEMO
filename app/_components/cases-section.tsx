@@ -1,5 +1,5 @@
 import type { Feature } from "../_data/ese";
-import { Reveal, Stagger, StaggerItem } from "./motion-effects";
+import { Reveal, Stagger, StaggerItem, SpotlightCard } from "./motion-effects";
 import { SectionHeading } from "./section-heading";
 
 type CasesSectionProps = {
@@ -31,10 +31,12 @@ export function CasesSection({ successCases }: CasesSectionProps) {
             {/* Quick Metrics Grid */}
             <div className="grid grid-cols-2 gap-4 pt-6 border-t border-[var(--ese-line)]">
               {caseMetrics.map((metric) => (
-                <div key={metric.label} className="rounded-xl bg-white p-4 border border-[var(--ese-line)] shadow-sm">
-                  <div className="font-display text-sm font-black text-[var(--ese-blue)]">{metric.value}</div>
-                  <div className="mt-1 text-[10px] font-bold text-[var(--ese-ink)] uppercase tracking-wider">{metric.label}</div>
-                  <div className="mt-1 text-[10px] text-neutral-500 leading-normal">{metric.details}</div>
+                <div key={metric.label}>
+                  <SpotlightCard className="rounded-xl bg-white p-4 border border-[var(--ese-line)] shadow-sm hover:shadow-md">
+                    <div className="font-display text-sm font-black text-[#0163d2]">{metric.value}</div>
+                    <div className="mt-1 text-[10px] font-bold text-[var(--ese-ink)] uppercase tracking-wider">{metric.label}</div>
+                    <div className="mt-1 text-[10px] text-neutral-500 leading-normal">{metric.details}</div>
+                  </SpotlightCard>
                 </div>
               ))}
             </div>
@@ -43,23 +45,22 @@ export function CasesSection({ successCases }: CasesSectionProps) {
           {/* Right Column: Detailed Case Study Cards */}
           <Stagger className="grid gap-5 md:grid-cols-2">
             {successCases.map((item) => (
-              <StaggerItem
-                key={item.title}
-                className="bg-white rounded-2xl p-6 border border-[var(--ese-line)] hover:border-[var(--ese-sky)] hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col justify-between"
-              >
-                <div className="absolute top-0 right-0 h-1 w-12 bg-gradient-to-r from-[var(--ese-sky)] to-[var(--ese-blue)]" />
-                <div>
-                  <h3 className="font-display text-base font-black text-[var(--ese-ink)] leading-snug">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3.5 text-xs leading-6 text-neutral-600">
-                    {item.body}
-                  </p>
-                </div>
-                <div className="mt-6 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[var(--ese-blue)]">
-                  <span>Completed Case Study</span>
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--ese-blue)]" />
-                </div>
+              <StaggerItem key={item.title}>
+                <SpotlightCard className="bg-white rounded-2xl p-6 border border-[var(--ese-line)] hover:shadow-md h-full flex flex-col justify-between">
+                  <div className="absolute top-0 right-0 h-1 w-12 bg-gradient-to-r from-[var(--ese-sky)] to-[var(--ese-blue)]" />
+                  <div>
+                    <h3 className="font-display text-base font-black text-[var(--ese-ink)] leading-snug">
+                      {item.title}
+                    </h3>
+                    <p className="mt-3.5 text-xs leading-6 text-neutral-600">
+                      {item.body}
+                    </p>
+                  </div>
+                  <div className="mt-6 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#0163d2]">
+                    <span>Completed Case Study</span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#0163d2]" />
+                  </div>
+                </SpotlightCard>
               </StaggerItem>
             ))}
           </Stagger>

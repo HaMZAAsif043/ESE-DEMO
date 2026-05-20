@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ESE_MEDIA, type Feature } from "../_data/ese";
-import { ParallaxFrame, Reveal, Stagger, StaggerItem } from "./motion-effects";
+import { ParallaxFrame, Reveal, Stagger, StaggerItem, SpotlightCard } from "./motion-effects";
 import { SectionHeading } from "./section-heading";
 
 type OperationsSectionProps = {
@@ -43,34 +43,32 @@ export function OperationsSection({ strengths }: OperationsSectionProps) {
 
             <div className="mt-10 space-y-8">
               <div>
-                <h4 className="font-display text-xs font-black uppercase tracking-widest text-[var(--ese-blue)] mb-5">
+                <h4 className="font-display text-xs font-black uppercase tracking-widest text-[#0163d2] mb-5">
                   Core Strategic Strengths
                 </h4>
                 <Stagger className="grid gap-4 sm:grid-cols-2">
                   {strengths.map((strength) => (
-                    <StaggerItem 
-                      key={strength.title} 
-                      className="rounded-xl border border-[var(--ese-line)] bg-[var(--ese-soft)]/50 p-5 transition-all duration-300 hover:bg-[var(--ese-soft)] hover:shadow-sm"
-                    >
-                      <h5 className="font-display text-sm font-extrabold text-[var(--ese-ink)]">{strength.title}</h5>
-                      <p className="mt-2.5 text-[11px] leading-5 text-neutral-600">{strength.body}</p>
+                    <StaggerItem key={strength.title}>
+                      <SpotlightCard className="rounded-xl border border-[var(--ese-line)] bg-[var(--ese-soft)]/20 p-5 hover:shadow-sm h-full">
+                        <h5 className="font-display text-sm font-extrabold text-[var(--ese-ink)]">{strength.title}</h5>
+                        <p className="mt-2.5 text-[11px] leading-5 text-neutral-600">{strength.body}</p>
+                      </SpotlightCard>
                     </StaggerItem>
                   ))}
                 </Stagger>
               </div>
 
               <div className="border-t border-[var(--ese-line)] pt-8">
-                <h4 className="font-display text-xs font-black uppercase tracking-widest text-[var(--ese-blue)] mb-5">
+                <h4 className="font-display text-xs font-black uppercase tracking-widest text-[#0163d2] mb-5">
                   Our Commitment to Delivery
                 </h4>
                 <Stagger className="grid gap-4 sm:grid-cols-2">
                   {whyUsItems.map((item) => (
-                    <StaggerItem 
-                      key={item.title} 
-                      className="rounded-xl border border-[var(--ese-line)] bg-[var(--ese-soft)]/50 p-5 transition-all duration-300 hover:bg-[var(--ese-soft)] hover:shadow-sm"
-                    >
-                      <h5 className="font-display text-sm font-extrabold text-[var(--ese-ink)]">{item.title}</h5>
-                      <p className="mt-2.5 text-[11px] leading-5 text-neutral-600">{item.body}</p>
+                    <StaggerItem key={item.title}>
+                      <SpotlightCard className="rounded-xl border border-[var(--ese-line)] bg-[var(--ese-soft)]/20 p-5 hover:shadow-sm h-full">
+                        <h5 className="font-display text-sm font-extrabold text-[var(--ese-ink)]">{item.title}</h5>
+                        <p className="mt-2.5 text-[11px] leading-5 text-neutral-600">{item.body}</p>
+                      </SpotlightCard>
                     </StaggerItem>
                   ))}
                 </Stagger>
@@ -90,9 +88,9 @@ export function OperationsSection({ strengths }: OperationsSectionProps) {
               />
             </ParallaxFrame>
 
-            <div className="bg-[var(--ese-soft)]/60 rounded-2xl p-7 border border-[var(--ese-line)] relative overflow-hidden">
-              <div className="absolute top-0 right-0 h-1.5 w-1.5 bg-[var(--ese-blue)] rounded-full m-4" />
-              <h3 className="font-display text-sm font-black uppercase tracking-widest text-[var(--ese-blue)]">
+            <SpotlightCard className="bg-[var(--ese-soft)]/40 rounded-2xl p-7 border border-[var(--ese-line)] hover:shadow-md">
+              <div className="absolute top-0 right-0 h-1.5 w-1.5 bg-[#0163d2] rounded-full m-4" />
+              <h3 className="font-display text-sm font-black uppercase tracking-widest text-[#0163d2]">
                 Smart Warehousing Network
               </h3>
               <p className="mt-3.5 text-xs leading-6 text-neutral-600">
@@ -104,11 +102,11 @@ export function OperationsSection({ strengths }: OperationsSectionProps) {
                   Real-time Inventory
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--ese-blue)]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#0163d2]" />
                   Category Segregation
                 </span>
               </div>
-            </div>
+            </SpotlightCard>
           </Reveal>
         </div>
       </div>
